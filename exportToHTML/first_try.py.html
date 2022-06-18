@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>first_try.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+first_try.py</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">requests</span>
+<span class="s0">from </span><span class="s1">bs4 </span><span class="s0">import </span><span class="s1">BeautifulSoup</span>
+<span class="s0">import </span><span class="s1">smtplib</span>
+<span class="s0">import </span><span class="s1">time</span>
+<span class="s0">import </span><span class="s1">re</span>
+
+
+<span class="s1">URL = </span><span class="s2">&quot;https://www.coolblue.be/nl/product/885460/irobot-roomba-i7158.html&quot;</span>
+
+<span class="s0">def </span><span class="s1">check_price(URL):</span>
+    <span class="s1">headers = {</span><span class="s2">'User-Agent'</span><span class="s1">: </span><span class="s2">'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:101.0) Gecko/20100101 Firefox/101.0'</span><span class="s1">}</span>
+    <span class="s1">page = requests.get(URL</span><span class="s0">, </span><span class="s1">headers = headers)</span>
+    <span class="s1">soup = BeautifulSoup(page.content</span><span class="s0">, </span><span class="s2">'html.parser'</span><span class="s1">)</span>
+    <span class="s1">price = soup.find(</span><span class="s2">'strong'</span><span class="s0">, </span><span class="s1">{</span><span class="s2">'class'</span><span class="s1">: </span><span class="s2">'sales-price__current js-sales-price-current'</span><span class="s1">}).text</span>
+    <span class="s1">print(price)</span>
+    <span class="s1">s = re.findall(</span><span class="s2">r'\d+'</span><span class="s0">, </span><span class="s1">price)</span>
+    <span class="s1">print(s)</span>
+    <span class="s0">if </span><span class="s1">len(s) == </span><span class="s3">1</span><span class="s1">:</span>
+        <span class="s1">price = s[</span><span class="s3">0</span><span class="s1">]</span>
+    <span class="s0">else</span><span class="s1">:</span>
+        <span class="s1">price = </span><span class="s2">f'</span><span class="s0">{</span><span class="s1">s[</span><span class="s3">0</span><span class="s1">]</span><span class="s0">}</span><span class="s2">,</span><span class="s0">{</span><span class="s1">s[</span><span class="s3">1</span><span class="s1">]</span><span class="s0">}</span><span class="s2">'</span>
+    <span class="s1">print(price)</span>
+
+    <span class="s0">if </span><span class="s1">int(price) &lt; </span><span class="s3">400</span><span class="s1">:</span>
+        <span class="s1">alert_me(URL</span><span class="s0">, </span><span class="s1">price)</span>
+
+<span class="s1">check_price(URL= URL)</span>
+
+<span class="s0">def </span><span class="s1">alert_me(URL</span><span class="s0">, </span><span class="s1">price):</span>
+    <span class="s0">pass</span>
+
+
+
+
+
+
+<span class="s1">check_price(URL=URL)</span>
+
+</pre>
+</body>
+</html>
