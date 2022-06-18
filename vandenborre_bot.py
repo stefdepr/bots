@@ -15,7 +15,7 @@ def check_price2(URL_list):
         text = soup.find("div", {"class": "margin-top-5-md margin-top-20"}).text
         text = text.strip()
         # print('1')
-        #print(text)
+        # print(text)
         # print('1')
         if 'Beschikbaar' in text:
             verwittigen(f"drone f{URL}")
@@ -28,8 +28,11 @@ links voor twilioshit
 https://www.freecodecamp.org/news/20-lines-of-python-code-get-notified-by-sms-when-your-favorite-team-scores-a-goal/
 https://www.twilio.com/
 """
+
+
 def verwittigen(message):
     client = Client('ACa8d45d665368dd2f4116fe023ed25ac9', 'e9c73e2f173dafd33bd2e3722274618d')
     client.messages.create(body=message, from_='', to='')
+
 
 check_price2(URL_list)
