@@ -4,6 +4,7 @@ from twilio.rest import Client
 import discord
 from discord.ext import commands
 from discord import client
+import requests
 
 URL_list = [
     "https://www.vandenborre.be/toebehoren-drones/dji-fly-more-kit-mini-3-pro?gclid=CjwKCAjw77WVBhBuEiwAJ-YoJNGWvR3ByBEHzQKIks4Bw9fGXPs07A-DeyaRJzkwlCtvWEXEMClYgBoCmcAQAvD_BwE", ]
@@ -22,8 +23,9 @@ def check_price2(URL_list):
         # print('1')
 
         if "Beschikbaar" in text:
-            verwittigen(f"drone {URL}")
-            activate_bot(f"drone {URL}")
+            verwittigen(f"drone \n{URL}")
+            activate_bot(f"drone \n{URL}")
+            webhook(f"drone \n{URL}")
         else:
             print('niet beschikbaar')
 
@@ -51,6 +53,13 @@ def activate_bot(message):
         await channel.send(message)
 
     bot.run(TOKEN)
+
+discord_webhook_url = "https://discord.com/api/webhooks/988105584874229841/TAbhr09sV0KdxX8ihk4zQO56CXpd6b1rw5nblcgo0afXxMzmg0cn_UJ3fVvllpPDKPRB"
+
+def webhook(message):
+    message_real = {"content": message}
+    requests.post(discord_webhook_url, data=message_real)
+
 
 
 
