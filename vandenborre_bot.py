@@ -41,7 +41,7 @@ def verwittigen(message):
 
 
 def activate_bot(message):
-    TOKEN = "OTg4MDY0ODk4NzQxMzI5OTQw.GxL5HY.b72blskJiqQwnKdegHZz11AY8Z-hiyYb9E6ntM"
+    TOKEN = "OTg4MDY0ODk4NzQxMzI5OTQw.GR3ZGq.dQeoqo9UyK2Z7KbgQdxhRowYNAnYX2qcjq7aKc" #new token
 
     bot = commands.Bot(command_prefix="!")
 
