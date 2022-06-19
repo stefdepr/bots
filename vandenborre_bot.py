@@ -2,12 +2,13 @@ import requests
 from bs4 import BeautifulSoup
 from twilio.rest import Client
 import discord
+from discord.ext import commands
+from discord import client
 
 URL_list = [
     "https://www.vandenborre.be/toebehoren-drones/dji-fly-more-kit-mini-3-pro?gclid=CjwKCAjw77WVBhBuEiwAJ-YoJNGWvR3ByBEHzQKIks4Bw9fGXPs07A-DeyaRJzkwlCtvWEXEMClYgBoCmcAQAvD_BwE", ]
 URL_available = "https://www.vandenborre.be/lcd-led-oled-tv/jvc-hd-24-inch-lt-24fd100"
-client = discord.Client()
-client.run("your token here") #token begrijkpk nie echt goe
+
 
 def check_price2(URL_list):
     for URL in URL_list:
@@ -19,9 +20,10 @@ def check_price2(URL_list):
         # print('1')
         # print(text)
         # print('1')
-        if 'Beschikbaar' in text:
-            verwittigen(f"drone f{URL}")
-            verwittegen_discord(f"drone f{URL}")
+
+        if "Beschikbaar" in text:
+            verwittigen(f"drone {URL}")
+            activate_bot(f"drone {URL}")
         else:
             print('niet beschikbaar')
 
@@ -37,12 +39,18 @@ def verwittigen(message):
     client = Client('ACa8d45d665368dd2f4116fe023ed25ac9', 'e9c73e2f173dafd33bd2e3722274618d')
     client.messages.create(body=message, from_='', to='')
 
-channelid = 0 #get channel id numbers
-@client.event
-async def verwittegen_discord(message):
-    channel = client.get_channel(channelid)
-    await channel.send(message)
+
+def activate_bot(message):
+    TOKEN = "OTg4MDY0ODk4NzQxMzI5OTQw.GxL5HY.b72blskJiqQwnKdegHZz11AY8Z-hiyYb9E6ntM"
+
+    bot = commands.Bot(command_prefix="!")
+
+    @bot.event
+    async def on_ready():
+        channel = bot.get_channel(988063268172091406)
+        await channel.send(message)
+
+    bot.run(TOKEN)
 
 
 
-check_price2(URL_list)
