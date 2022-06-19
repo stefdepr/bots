@@ -5,6 +5,7 @@ import discord
 from discord.ext import commands
 from discord import client
 import requests
+from discord_webhook import DiscordWebhook, DiscordEmbed
 
 URL_list = [
     "https://www.vandenborre.be/toebehoren-drones/dji-fly-more-kit-mini-3-pro?gclid=CjwKCAjw77WVBhBuEiwAJ-YoJNGWvR3ByBEHzQKIks4Bw9fGXPs07A-DeyaRJzkwlCtvWEXEMClYgBoCmcAQAvD_BwE", ]
@@ -18,14 +19,12 @@ def check_price2(URL_list):
         soup = BeautifulSoup(page.content, 'html.parser')
         text = soup.find("div", {"class": "margin-top-5-md margin-top-20"}).text
         text = text.strip()
-        # print('1')
-        # print(text)
-        # print('1')
 
         if "Beschikbaar" in text:
             verwittigen(f"drone \n{URL}")
             activate_bot(f"drone \n{URL}")
-            webhook(f"drone \n{URL}")
+            #webhook(f"drone \n{URL}")
+            webhook_2(soup=soup, url=URL)
         else:
             print('niet beschikbaar')
 
@@ -43,7 +42,7 @@ def verwittigen(message):
 
 
 def activate_bot(message):
-    TOKEN = "OTg4MDY0ODk4NzQxMzI5OTQw.GR3ZGq.dQeoqo9UyK2Z7KbgQdxhRowYNAnYX2qcjq7aKc" #new token
+    TOKEN = "OTg4MDY0ODk4NzQxMzI5OTQw.GR3ZGq.dQeoqo9UyK2Z7KbgQdxhRowYNAnYX2qcjq7aKc"  # new token
 
     bot = commands.Bot(command_prefix="!")
 
@@ -54,12 +53,29 @@ def activate_bot(message):
 
     bot.run(TOKEN)
 
+
 discord_webhook_url = "https://discord.com/api/webhooks/988105584874229841/TAbhr09sV0KdxX8ihk4zQO56CXpd6b1rw5nblcgo0afXxMzmg0cn_UJ3fVvllpPDKPRB"
+
 
 def webhook(message):
     message_real = {"content": message}
     requests.post(discord_webhook_url, data=message_real)
 
 
+def webhook_2(soup, url):
+    images = []
+    for img in soup.findAll('img'):
+        images.append(img.get('src'))
+    image_link = images[-1]
+    image_link_correct = 'https://' + str(image_link[2:])
+    discord_webhook_url = "https://discord.com/api/webhooks/988105584874229841/TAbhr09sV0KdxX8ihk4zQO56CXpd6b1rw5nblcgo0afXxMzmg0cn_UJ3fVvllpPDKPRB"
 
+    webhook = DiscordWebhook(url=discord_webhook_url)
+    # add layout
+    layout = DiscordEmbed(title='Klik hier', description='De drone is beschikbaar', color='03b2f8', url=url)
+    layout.set_author(name='Klingzie')
+    layout.set_thumbnail(url=image_link_correct)
+    layout.set_timestamp()
+    webhook.add_embed(layout)
+    response = webhook.execute()
 
